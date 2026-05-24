@@ -1,0 +1,100 @@
+<div class="popup-overlay">
+    @if(userService.status() == 2){
+
+    }
+
+
+    <div class="popup">
+        <button class="btn-close" (click)="closeFun()">✕</button>
+        <h2>מועמדים למשרה</h2>
+
+        <div class="top-section">
+
+            <div class="top-card" *ngFor="let c of topCandidates">
+
+                <h3>{{c.fullName}}</h3>
+
+                <div class="score">{{c.finalScore | number:'1.0-0'}}%</div>
+
+            </div>
+
+        </div>
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th *ngIf="userService.status() != 2">בחר</th>
+                    <th>שם</th>
+                    <th>ציון מבחן</th>
+                    <th>התאמה</th>
+                    <th>AI</th>
+                    <th>דירוג</th>
+                    <th>CV</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr *ngFor="let c of candidates" [class.top]="c.finalScore>=80">
+
+                    <td>
+                        <input *ngIf="userService.status() != 2" type="checkbox" [(ngModel)]="c.confirmed">
+                    </td>
+
+                    <td>{{c.fullName}}</td>
+
+                    <td>{{c.testScore}}</td>
+
+                    <td>
+
+                        <div class="badge" [style.background]="getColor(c.matchScore)">
+
+                            {{c.matchScore}}%
+
+                        </div>
+
+                    </td>
+
+                    <td>
+
+                        <div class="badge ai">
+
+                            {{c.aiScore}}%
+
+                        </div>
+
+                    </td>
+
+                    <td>
+
+                        <div class="badge final">
+
+                            {{c.finalScore | number:'1.0-0'}}%
+
+                        </div>
+
+                    </td>
+
+                    <td>
+
+                        <a *ngIf="c.cvUrl" [href]="fixUrl(c.cvUrl)" target="_blank">
+                            הצג קובץ
+                        </a>
+
+                        <!-- <a [href]="c.cvUrl" target="_blank">CV</a> -->
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+        <button *ngIf="userService.status() != 2" (click)="toSuggest()">הגשה</button>
+    </div>
+
+</div>

@@ -1,0 +1,124 @@
+<div class="landing-fullscreen" [class.dark-mode]="isDarkMode">
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" (click)="toggleTheme()" [attr.aria-label]="isDarkMode ? 'מעבר לתצוגת יום' : 'מעבר לתצוגת לילה'">
+    <span class="toggle-icon">{{ isDarkMode ? '☀️' : '🌙' }}</span>
+  </button>
+  <!-- Soft Glows -->
+  <div class="bg-animation">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Split Layout -->
+  <div class="landing-split">
+    <!-- Right Side: Content -->
+    <div class="landing-content">
+      <div class="logo-mark">JM</div>
+      <h1 class="title">
+        <span class="word-1">מצא.</span>
+        <span class="word-2">התאם.</span>
+        <span class="word-3">הצלח.</span>
+      </h1>
+      <p class="tagline">הפלטפורמה החכמה שמחברת בין מועמדים למשרות — עם AI</p>
+
+      <!-- Floating Cards -->
+      <div class="floating-cards">
+        <div class="float-card fc-1">
+          <div class="fc-icon">92%</div>
+          <span>התאמה למשרה</span>
+        </div>
+        <div class="float-card fc-2">
+          <div class="fc-icon fc-ai">AI</div>
+          <span>ניתוח חכם</span>
+        </div>
+        <div class="float-card fc-3">
+          <div class="fc-icon fc-cv">CV</div>
+          <span>קו"ח אוטומטי</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="actions">
+        <button class="btn-main" (click)="goToRegister()">אני מועמד — בואו נתחיל</button>
+        <button class="btn-company" (click)="goToLogin()">אני חברה — כניסה</button>
+      </div>
+
+      <div class="trust-line">
+        <span>500+ משרות</span>
+        <span class="dot"></span>
+        <span>2,000+ מועמדים</span>
+        <span class="dot"></span>
+        <span>98% שביעות רצון</span>
+      </div>
+    </div>
+
+    <!-- Left Side: Process Flow + Video Demo -->
+    <div class="landing-demo">
+      <div class="demo-title">איך זה עובד?</div>
+
+      <!-- Steps + Video combined -->
+      <div class="demo-combined">
+        <!-- Steps sidebar -->
+        <div class="process-steps">
+          <div class="flow-step" [class.step-active]="currentStep === 1">
+            <div class="step-num">1</div>
+            <div class="step-label">הרשמה</div>
+          </div>
+          <div class="flow-connector"></div>
+          <div class="flow-step" [class.step-active]="currentStep === 2">
+            <div class="step-num">2</div>
+            <div class="step-label">מבחן</div>
+          </div>
+          <div class="flow-connector"></div>
+          <div class="flow-step" [class.step-active]="currentStep === 3">
+            <div class="step-num">3</div>
+            <div class="step-label">ניתוח AI</div>
+          </div>
+          <div class="flow-connector"></div>
+          <div class="flow-step" [class.step-active]="currentStep === 4">
+            <div class="step-num">4</div>
+            <div class="step-label">הגשה</div>
+          </div>
+        </div>
+
+        <!-- Video screen -->
+        <div class="demo-screen">
+          <div class="screen-dots"><span></span><span></span><span></span></div>
+          <div class="screen-body">
+            <!-- Scene 1 -->
+            <div class="scene" [class.visible]="currentStep === 1">
+              <div class="s-title">הרשמה מהירה</div>
+              <div class="s-input">שם: ישראל ישראלי</div>
+              <div class="s-input">תחום: פיתוח תוכנה</div>
+              <div class="s-btn">הרשמה</div>
+            </div>
+            <!-- Scene 2 -->
+            <div class="scene" [class.visible]="currentStep === 2">
+              <div class="s-title">מבחן התאמה</div>
+              <div class="s-q">מה מתאר אותך הכי טוב?</div>
+              <div class="s-opt">יצירתי ופתוח</div>
+              <div class="s-opt chosen">מדויק ושיטתי</div>
+              <div class="s-opt">מנהיג טבעי</div>
+            </div>
+            <!-- Scene 3 -->
+            <div class="scene" [class.visible]="currentStep === 3">
+              <div class="s-title">ניתוח AI</div>
+              <div class="s-analyzing">
+                <div class="analyze-bar"><div class="analyze-fill"></div></div>
+                <span>מנתח נתונים...</span>
+              </div>
+            </div>
+            <!-- Scene 4 -->
+            <div class="scene" [class.visible]="currentStep === 4">
+              <div class="s-title">משרות מותאמות</div>
+              <div class="s-result"><span class="s-score">92%</span>Full Stack — TechCorp</div>
+              <div class="s-result"><span class="s-score s2">87%</span>מנהל פרויקטים</div>
+              <div class="s-result"><span class="s-score s3">81%</span>ראש צוות</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

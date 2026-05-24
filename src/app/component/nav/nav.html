@@ -1,0 +1,75 @@
+<aside class="sidebar">
+  <!-- Logo / Brand -->
+  <div class="sidebar__brand">
+    <div class="sidebar__logo">
+      <span>JM</span>
+    </div>
+    <h2 class="sidebar__title">JobMatch</h2>
+  </div>
+
+  <!-- User Avatar -->
+  <div class="sidebar__user" *ngIf="userService.currentUser()">
+    <div class="sidebar__avatar">
+      {{ name() }}
+    </div>
+    <span class="sidebar__username">שלום!</span>
+  </div>
+
+  <!-- Navigation Links -->
+  <nav class="sidebar__nav">
+    <a *ngIf="userService.status() == 0" routerLink="Create-customer" routerLinkActive="active" class="nav-link">
+      <i class="pi pi-user-plus"></i>
+      <span>הרשמה</span>
+    </a>
+    <a *ngIf="userService.status() == 0" routerLink="Login" routerLinkActive="active" class="nav-link">
+      <i class="pi pi-sign-in"></i>
+      <span>התחברות</span>
+    </a>
+    <a *ngIf="userService.status() == 0" routerLink="hasava" routerLinkActive="active" class="nav-link">
+      <i class="pi pi-hasava"></i>
+      <span>NEW</span>
+    </a>
+    <a *ngIf="userService.status() != 0" routerLink="PostList" routerLinkActive="active" class="nav-link">
+      <i class="pi pi-briefcase"></i>
+      <span>משרות</span>
+    </a>
+    <a *ngIf="userService.status() == 1" routerLink="PostToConfirm" routerLinkActive="active" class="nav-link">
+      <i class="pi pi-check-circle"></i>
+      <span>אישור משרות</span>
+    </a>
+    <a *ngIf="userService.status() == 1" routerLink="Companies" routerLinkActive="active" class="nav-link">
+      <i class="pi pi-building"></i>
+      <span>חברות</span>
+    </a>
+    <a *ngIf="userService.status() == 3" routerLink="Test" routerLinkActive="active" class="nav-link">
+      <i class="pi pi-file-edit"></i>
+      <span>מבחנים</span>
+    </a><a *ngIf="userService.status() == 3" routerLink="Koch" routerLinkActive="active" class="nav-link">
+      <i class="pi pi-file-edit"></i>
+      <span>קורות חיים</span>
+      <span class="pro-badge">PRO</span>
+    </a>
+       <a *ngIf="userService.status() == 3" routerLink="hasava" routerLinkActive="active" class="nav-link">
+      <i class="pi pi-file-edit"></i>
+      <span>ניתוח AI</span>
+      <span class="pro-badge">PRO</span>
+    </a>
+      <a *ngIf="userService.status() == 3" routerLink="dashboard" routerLinkActive="active" class="nav-link">
+      <i class="pi pi-file-edit"></i>
+      <span>Dashboard</span>
+    </a>
+    
+    <a *ngIf="userService.status() == 1" routerLink="dashboard" routerLinkActive="active" class="nav-link">
+      <i class="pi pi-chart-bar"></i>
+      <span>דשבורד</span>
+    </a>
+  </nav>
+
+  <!-- Logout -->
+  <div class="sidebar__footer" *ngIf="userService.status() != 0">
+    <button class="nav-link nav-link--logout" (click)="logout()">
+      <i class="pi pi-sign-out"></i>
+      <span>התנתקות</span>
+    </button>
+  </div>
+</aside>

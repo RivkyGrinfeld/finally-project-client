@@ -1,0 +1,80 @@
+<div class="pro-page">
+  <div class="pro-header">
+    <h1>שדרוג לחשבון PRO</h1>
+    <p>קבל גישה לשירותי AI מתקדמים — ניתוח כתב יד ויצירת קורות חיים אוטומטית</p>
+  </div>
+
+  <div class="plans-grid">
+    <!-- Basic Plan -->
+    <div class="plan-card" [class.selected]="selectedPlan === 'basic'" (click)="selectPlan('basic')">
+      <div class="plan-name">בסיסי</div>
+      <div class="plan-price">
+        <span class="price">₪29</span>
+        <span class="period">/ חודש</span>
+      </div>
+      <ul class="plan-features">
+        <li>ניתוח כתב יד AI</li>
+        <li>יצירת קו"ח אחד</li>
+        <li>תמיכה במייל</li>
+      </ul>
+      <button class="plan-btn" [class.active]="selectedPlan === 'basic'">
+        {{ selectedPlan === 'basic' ? 'נבחר' : 'בחר תוכנית' }}
+      </button>
+    </div>
+
+    <!-- Pro Plan -->
+    <div class="plan-card popular" [class.selected]="selectedPlan === 'pro'" (click)="selectPlan('pro')">
+      <div class="popular-tag">הכי פופולרי</div>
+      <div class="plan-name">מקצועי</div>
+      <div class="plan-price">
+        <span class="price">₪49</span>
+        <span class="period">/ חודש</span>
+      </div>
+      <ul class="plan-features">
+        <li>ניתוח כתב יד AI ללא הגבלה</li>
+        <li>יצירת קו"ח ללא הגבלה</li>
+        <li>המלצות משרות מותאמות</li>
+        <li>תמיכה בצ'אט</li>
+      </ul>
+      <button class="plan-btn" [class.active]="selectedPlan === 'pro'">
+        {{ selectedPlan === 'pro' ? 'נבחר' : 'בחר תוכנית' }}
+      </button>
+    </div>
+
+    <!-- Premium Plan -->
+    <div class="plan-card" [class.selected]="selectedPlan === 'premium'" (click)="selectPlan('premium')">
+      <div class="plan-name">פרימיום</div>
+      <div class="plan-price">
+        <span class="price">₪99</span>
+        <span class="period">/ חודש</span>
+      </div>
+      <ul class="plan-features">
+        <li>כל מה שבמקצועי</li>
+        <li>ייעוץ קריירה AI</li>
+        <li>עדיפות בהגשת מועמדות</li>
+        <li>תמיכה טלפונית</li>
+      </ul>
+      <button class="plan-btn" [class.active]="selectedPlan === 'premium'">
+        {{ selectedPlan === 'premium' ? 'נבחר' : 'בחר תוכנית' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="pay-section" *ngIf="selectedPlan">
+    <button class="btn-pay" (click)="pay()">בצע תשלום</button>
+  </div>
+
+  <!-- Success Popup -->
+  <div *ngIf="showSuccess" class="success-overlay" (click)="closeSuccess()">
+    <div class="success-popup" (click)="$event.stopPropagation()">
+      <div class="success-circle">
+        <svg class="success-checkmark" viewBox="0 0 52 52">
+          <path class="checkmark-path" fill="none" d="M14 27l7.8 7.8L38 17"/>
+        </svg>
+      </div>
+      <h3>התשלום בוצע בהצלחה!</h3>
+      <p>חשבון ה-PRO שלך פעיל. תהנה מהשירותים המתקדמים</p>
+      <button class="btn-success-close" (click)="closeSuccess()">המשך</button>
+    </div>
+  </div>
+</div>

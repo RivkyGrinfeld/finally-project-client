@@ -1,0 +1,144 @@
+<div *ngIf="userService.status() != 0" class="posts-container">
+  <div class="header">
+    <h1 class="header-title">כל המשרות</h1>
+    <button *ngIf="userService.status() != 3" class="btn-add" (click)="openAddPostModal()">הוסף משרה חדשה</button>
+  </div>
+
+  <!-- Recommended Section for Candidates -->
+  <div *ngIf="userService.status() == 3 && recommendedPosts.length > 0" class="recommended-section">
+    <div class="recommended-header">
+      <div class="recommended-badge">מותאם אישית</div>
+      <h2>משרות מומלצות עבורך</h2>
+      <p>משרות שמתאימות לענף המקצועי ולכישורים שלך</p>
+    </div>
+    <div class="posts-grid">
+      <div *ngFor="let post of recommendedPosts" class="post-card recommended" (click)="selectPost(post)">
+        <div class="card-badges-row">
+          <div class="status-badge" [class.open]="post.isAvailble" [class.closed]="!post.isAvailble">
+            {{ getAvailabilityLabel(post.isAvailble) }}
+          </div>
+          <div class="recommended-tag"><span class="fire-icon">🔥</span> מומלץ</div>
+        </div>
+        <h2 class="card-title">{{ post.jobTitle || 'משרה #' + post.id }}</h2>
+        <p class="city">{{ post.city }}</p>
+        <p class="salary">₪{{ post.salary | number }}</p>
+        <p class="reqs">{{ post.requests?.length || 0 }} דרישות</p>
+        <div class="card-actions">
+          <button class="btn-apply-main" (click)="toApply(post); $event.stopPropagation()">הגשת מועמדות</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div *ngIf="userService.status() == 3 && recommendedPosts.length > 0" class="section-divider">
+    <span>כל המשרות הזמינות</span>
+  </div>
+
+  <!-- View Toggle -->
+  <div class="view-toggle">
+    <button (click)="toggleView()" [ngClass]="{'active': isGridView}" class="toggle-btn">כרטיסים</button>
+    <button (click)="toggleView()" [ngClass]="{'active': !isGridView}" class="toggle-btn">רשימה</button>
+  </div>
+
+  <!-- Enhanced Filters -->
+  <div class="filter-section">
+    <div class="search-box">
+      <input type="text" placeholder="חיפוש חופשי..." [(ngModel)]="searchText" (input)="filterPosts()" class="search-input" />
+    </div>
+    <div *ngIf="userService.status() != 3" class="filter-status">
+      <select [(ngModel)]="filterAvailable" (change)="filterPosts()" class="status-select">
+        <option value="הכל">סטטוס: הכל</option>
+        <option value="פתוחה">פתוחה</option>
+        <option value="סגורה">סגורה</option>
+      </select>
+    </div>
+    <div class="filter-status">
+      <select [(ngModel)]="filterSalary" (change)="filterPosts()" class="status-select">
+        <option value="הכל">שכר: הכל</option>
+        <option value="low">עד ₪10,000</option>
+        <option value="mid">₪10,000 - ₪20,000</option>
+        <option value="high">מעל ₪20,000</option>
+      </select>
+    </div>
+    <div class="filter-status" *ngIf="userService.status() == 3">
+      <select [(ngModel)]="filterMatch" (change)="filterPosts()" class="status-select">
+        <option value="הכל">התאמה: הכל</option>
+        <option value="recommended">מומלצות בלבד</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Posts Grid -->
+  <div [ngClass]="{'posts-grid': isGridView, 'posts-list': !isGridView}">
+    <div *ngIf="filteredPosts.length === 0" class="no-posts">
+      אין משרות התואמות את החיפוש
+    </div>
+    <div *ngFor="let post of filteredPosts" class="post-card" (click)="selectPost(post)">
+      <div class="card-badges-row">
+        <div class="status-badge" [class.open]="post.isAvailble" [class.closed]="!post.isAvailble">
+          {{ getAvailabilityLabel(post.isAvailble) }}
+        </div>
+        <div *ngIf="isRecommended(post)" class="recommended-tag"><span class="fire-icon">🔥</span> מומלץ</div>
+      </div>
+      <h2 class="card-title">{{ post.jobTitle || 'משרה #' + post.id }}</h2>
+      <p class="city">{{ post.city }}</p>
+      <p class="salary">₪{{ post.salary | number }}</p>
+      <p class="reqs">{{ post.requests?.length || 0 }} דרישות</p>
+      <div class="card-actions">
+        <button *ngIf="(userService.status() == 2 || userService.status() == 1) && !post.isConfirmed" class="btn-edit" (click)="editPost(post); $event.stopPropagation()">עדכון</button>
+        <button *ngIf="(userService.status() == 2 || userService.status() == 1) && !post.isConfirmed" class="btn-delete" (click)="deletePost(post); $event.stopPropagation()">מחיקה</button>
+        <button *ngIf="userService.status() == 2 || userService.status() == 1" class="btn-customer" (click)="openAllCust(post.id); $event.stopPropagation()">מועמדים</button>
+        <button *ngIf="userService.status() == 3 && post.isConfirmed" class="btn-apply-main" (click)="toApply(post); $event.stopPropagation()">הגשת מועמדות</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Candidates Popup -->
+  <app-candidates-popup *ngIf="showCandidatesModal" [postId]="selectedPostId" (close)="closeCandidatesPopup()"></app-candidates-popup>
+
+  <!-- Post Detail Modal -->
+  <div *ngIf="showPostDetail && selectedPost" class="modal-overlay" (click)="closeDetail()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <button class="btn-close" (click)="closeDetail()">&#10005;</button>
+      <h2>משרה מס' {{ selectedPost.id }}</h2>
+      <div class="post-details">
+        <p><strong>חברה:</strong> {{ getCompanyName(selectedPost.companyId) }}</p>
+        <p><strong>תפקיד:</strong> {{ getPositionName(selectedPost.positionId) }}</p>
+        <p><strong>כותרת המשרה:</strong> {{ selectedPost.jobTitle }}</p>
+        <p><strong>תיאור המשרה:</strong> {{ selectedPost.jobDescription }}</p>
+        <p><strong>עיר:</strong> {{ selectedPost.city }}</p>
+        <p><strong>משכורת:</strong> ₪{{ selectedPost.salary | number }}</p>
+        <p><strong>סטטוס:</strong> {{ getAvailabilityLabel(selectedPost.isAvailble) }}</p>
+        <p><strong>תאריך:</strong> {{ selectedPost.date | date: 'dd/MM/yyyy' }}</p>
+        <p><strong>מאושרת:</strong> {{ selectedPost.isConfirmed ? 'כן' : 'לא' }}</p>
+      </div>
+      <div class="candidates-section" *ngIf="selectedPost">
+        <h3>דרישות למשרה:</h3>
+        <div *ngIf="selectedPost.requests && selectedPost.requests.length > 0" class="candidates-list">
+          <div *ngFor="let request of selectedPost.requests; let i = index" class="candidate-item">
+            <p>דרישה #{{ i + 1 }}</p>
+          </div>
+        </div>
+        <p *ngIf="!selectedPost.requests || selectedPost.requests.length === 0">אין דרישות עדיין</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Post Modal -->
+  <app-add-post *ngIf="showAddPostModal" [postToEdit]="selectedPost" (closeModal)="closeAddPostModal()" (savePost)="onPostSaved($event)"></app-add-post>
+
+  <!-- Success Popup -->
+  <div *ngIf="showSuccessPopup" class="success-overlay" (click)="closeSuccessPopup()">
+    <div class="success-popup" (click)="$event.stopPropagation()">
+      <div class="success-circle">
+        <svg class="success-checkmark" viewBox="0 0 52 52">
+          <path class="checkmark-path" fill="none" d="M14 27l7.8 7.8L38 17"/>
+        </svg>
+      </div>
+      <h3>המועמדות הוגשה בהצלחה!</h3>
+      <p>בקשתך התקבלה ותיבדק בהקדם</p>
+      <button class="btn-success-close" (click)="closeSuccessPopup()">סגור</button>
+    </div>
+  </div>
+</div>

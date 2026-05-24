@@ -1,0 +1,24 @@
+
+
+
+<div class="enter-container">
+  <div class="enter-card">
+    <h1><i class="fa-solid fa-sign-in-alt"></i> כניסה</h1>
+    
+    <div class="form-group">
+      <label>שם משתמש</label>
+      <input type="text" [(ngModel)]="name" placeholder="הכנס את שם המשתמש שלך">
+    </div>
+
+    <div class="form-group">
+      <label>סיסמה</label>
+      <input type="password" [(ngModel)]="password" placeholder="הכנס את הסיסמה שלך">
+    </div>
+
+    <button class="btn-enter" (click)="logIn()">
+      <i class="fa-solid fa-right-to-bracket"></i> כניסה
+    </button>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

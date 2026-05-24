@@ -1,0 +1,23 @@
+<div class="posts-container">
+    <div class="header">
+        <h1>משרות לא מאושרות</h1>
+    </div>
+
+    <div *ngIf="loading">טוען משרות...</div>
+    <div *ngIf="!loading && posts.length === 0" class="no-posts">אין משרות לא מאושרות להצגה.</div>
+
+    <div class="posts-grid" *ngIf="posts.length > 0">
+        <div class="post-card" *ngFor="let post of posts">
+            <div *ngIf="!post.isConfirmed">
+            <h2>id: {{post.id }}</h2>
+            <h2>תפקיד: {{ getPositionDescription(post) }}</h2>
+            <p class="city">עיר: {{ post.city }}</p>
+            <p class="salary">שכר: {{ post.salary | currency:'ILS' }}</p>
+            <p>תאריך: {{ post.date | date:'dd/MM/yyyy' }}</p>
+            <p>חברה: {{ getCompanyName(post) }}</p>
+            <div class="card-actions">
+                <button class="btn-confirm" (click)="confirmPost(post)">✔️ אשר משרה</button>
+            </div>
+            </div>
+        </div>
+    </div>

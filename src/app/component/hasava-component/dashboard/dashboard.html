@@ -1,0 +1,73 @@
+<p>dashboard works!</p>
+<div class="dashboard">
+
+  <div class="card">
+    <h3>פילוח לקוחות</h3>
+    <div echarts [options]="pieOptions" class="chart"></div>
+  </div>
+
+  <div class="card">
+    <h3>הכנסות</h3>
+    <div echarts [options]="barOptions" class="chart"></div>
+  </div>
+
+  <div class="card full">
+    <h3>מגמת פעילות</h3>
+    <div echarts [options]="lineOptions" class="chart"></div>
+  </div>
+
+</div>
+<div class="dashboard">
+
+  <!-- FILTER BAR -->
+  <!-- <div class="topbar"> -->
+    <!-- <button (click)="onRangeChange('7d')" [class.active]="selectedRange==='7d'">7 ימים</button>
+    <button (click)="onRangeChange('30d')" [class.active]="selectedRange==='30d'">30 יום</button>
+  </div> -->
+
+  <!-- LOADING -->
+  <!-- <div *ngIf="loading" class="loading">
+    טוען נתונים...
+  </div> -->
+
+  <!-- KPI -->
+  <!-- <div class="kpis" *ngIf="!loading">
+
+    <div class="kpi">
+      <div>משתמשים</div>
+      <b>{{kpis.users}}</b>
+    </div>
+
+    <div class="kpi">
+      <div>הכנסות</div>
+      <b>{{kpis.revenue}} ₪</b>
+    </div>
+
+    <div class="kpi">
+      <div>הזמנות</div>
+      <b>{{kpis.orders}}</b>
+    </div>
+
+  </div>
+
+   CHARTS -->
+  <!-- <div class="grid" *ngIf="!loading">
+
+    <div class="card">
+      <h3>פילוח לקוחות</h3>
+      <div echarts [options]="pieOptions" class="chart"></div>
+    </div>
+
+    <div class="card">
+      <h3>הכנסות</h3>
+      <div echarts [options]="barOptions" class="chart"></div>
+    </div>
+
+    <div class="card wide">
+      <h3>מגמה</h3>
+      <div echarts [options]="lineOptions" class="chart"></div>
+    </div>
+
+  </div>
+
+</div> --> 

@@ -1,0 +1,63 @@
+<div class="posts-container">
+
+  <div class="header">
+    <h1>Companies</h1>
+    <button class="btn-add" (click)="openModal()">Add Company</button>
+  </div>
+
+  <div class="filter-section">
+    <div class="search-box">
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search company..."
+        [(ngModel)]="searchTerm"
+        (input)="filterCompanies()"
+      />
+    </div>
+  </div>
+
+  <div class="posts-grid">
+
+    <div *ngIf="filteredCompanies.length === 0" class="no-posts">
+      No companies found
+    </div>
+
+    <div *ngFor="let company of filteredCompanies" class="post-card">
+      <h2>{{ company.name }}</h2>
+      <p>{{ company.email }}</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- POPUP -->
+<div class="modal-overlay" *ngIf="showModal">
+  <div class="modal-content">
+
+    <button class="btn-close" (click)="closeModal()">×</button>
+
+    <h2>Add Company</h2>
+
+    <form [formGroup]="companyForm" (ngSubmit)="submit()">
+
+      <div>
+        <input type="text" formControlName="name" placeholder="Company Name" />
+      </div>
+
+      <div>
+        <input type="email" formControlName="email" placeholder="Email" />
+      </div>
+ <div>
+        <input type="password" formControlName="password" placeholder="Password" />
+      </div>
+ <div>
+        <input type="text" formControlName="username" placeholder="Username" />
+      </div>
+
+      <button class="btn-add" type="submit">Save</button>
+
+    </form>
+
+  </div>
+</div>

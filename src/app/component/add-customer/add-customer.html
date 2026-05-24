@@ -1,0 +1,27 @@
+<!-- customer.component.html -->
+<form (ngSubmit)="submitCustomer(customerForm.value)" #customerForm="ngForm">
+    <input name="firstName" ngModel placeholder="First Name" required>
+    <input name="lastName" ngModel placeholder="Last Name" required>
+    <input name="email" ngModel placeholder="Email" required type="email">
+    <input name="id" ngModel placeholder="Id" required type="text">
+    <input name="bornDate" ngModel placeholder="BornDate" required type="date">
+    <input name="city" ngModel placeholder="City" required type="text">
+    <input name="address" ngModel placeholder="Address" type="text">
+    <input name="numOfChildren" ngModel placeholder="NumOfChildren" type="number">
+    <!-- branch -->
+    <select name="branchId" ngModel>
+        <option *ngFor="let branch of branches" [value]=branch.id>{{branch.description}}</option>
+    </select>
+    <input name="phone" ngModel placeholder="Phone" type="text">
+    <input name="userName" ngModel placeholder="UserName" type="text">
+    <input name="password" ngModel placeholder="Password" type="password">
+    <select name="statusId" ngModel>
+        <option value="1">רווק</option>
+        <option value="2">נשוי</option>
+        <option value="3">אלמן</option>
+        <option value="4">גרוש</option>
+    </select>
+    <input type="file" (change)="onFileSelected($event)" required>
+
+    <button type="submit">Save Customer</button>
+</form>

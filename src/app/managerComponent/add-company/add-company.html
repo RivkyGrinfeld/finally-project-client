@@ -1,0 +1,26 @@
+<div class="posts-container">
+
+  <div class="header">
+    <h1>Add  Company</h1>
+  </div>
+
+  <div class="modal-content">
+    <form [formGroup]="companyForm" (ngSubmit)="submit()">
+
+      <div>
+        <input type="number" formControlName="id" placeholder="ID" />
+      </div>
+
+      <div>
+        <input type="text" formControlName="name" placeholder="Company Name" />
+      </div>
+
+      <div>
+        <input type="email" formControlName="email" placeholder="Email" />
+      </div>
+
+      <button class="btn-add" type="submit">Save</button>
+
+    </form>
+  </div>
+</div>

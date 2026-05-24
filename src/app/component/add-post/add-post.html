@@ -1,0 +1,96 @@
+<div class="form-modal">
+  <div class="form-container">
+    <div class="form-header">
+      <h2>{{ postToEdit ? 'עדכון משרה' : 'הוספת משרה חדשה' }}</h2>
+      <button class="btn-close" (click)="close()">✕</button>
+    </div>
+
+    <form (ngSubmit)="saveNewPost()" class="form-content">
+
+      <!-- חברה -->
+      <div class="form-group">
+        <label for="company">חברה</label>
+        <select *ngIf="userService.status() != 2" id="company" [(ngModel)]="selectedCompanyId" name="company" required class="form-control">
+          @for(a of companies; track a; let i = $index){<option [ngValue]="a.id">{{ a.name }}</option>}
+        </select>
+        <p *ngIf="userService.status() == 2" class="company-name">{{companyService.getCompanyName(userService.id())}}</p>
+      </div>
+
+      <!-- ענף -->
+      <div class="form-group">
+        <label for="branch">ענף</label>
+        <div class="input-with-btn">
+          <select id="branch" [(ngModel)]="selectedBranchId" (change)="onBranchSelected()" name="branch" class="form-control">
+            @for(a of branches; track a; let i = $index){<option [ngValue]="a.id">{{ a.description }}</option>}
+          </select>
+          <button type="button" (click)="addBranch()" class="btn-inline-add">+</button>
+        </div>
+      </div>
+
+      <!-- תפקיד -->
+      <div class="form-group" *ngIf="positions.length > 0">
+        <label for="position">תפקיד</label>
+        <div class="input-with-btn">
+          <select id="position" [(ngModel)]="selectedPositionId" name="position" required class="form-control">
+            @for(a of positions; track a; let i = $index){<option [ngValue]="a.id">{{ a.description }}</option>}
+          </select>
+          <button type="button" (click)="addPosition()" class="btn-inline-add">+</button>
+        </div>
+      </div>
+
+      <!-- כותרת משרה -->
+      <div class="form-group">
+        <label for="jobTitle">כותרת המשרה</label>
+        <input type="text" id="jobTitle" [(ngModel)]="post.jobTitle" name="jobTitle" class="form-control" placeholder="לדוגמה: מפתח Full Stack">
+      </div>
+
+      <!-- עיר -->
+      <div class="form-group">
+        <label for="city">עיר</label>
+        <input type="text" id="city" [(ngModel)]="post.city" name="city" required class="form-control" placeholder="לדוגמה: תל אביב">
+      </div>
+
+      <!-- משכורת -->
+      <div class="form-group">
+        <label for="salary">משכורת מוצעת (₪)</label>
+        <input type="number" id="salary" [(ngModel)]="post.salary" name="salary" required min="0" class="form-control" placeholder="לדוגמה: 15000">
+      </div>
+
+      <!-- דרישות -->
+      <div class="form-group">
+        <label>דרישות למשרה</label>
+        <div class="properties-input">
+          <select [(ngModel)]="selectedPropertyId" name="propertySelect" class="form-control">
+            <option value="">בחר מאפיין</option>
+            <option *ngFor="let prop of properties" [ngValue]="prop.id">{{ prop.description }}</option>
+          </select>
+          <input type="number" [(ngModel)]="minGrade" name="minGrade" min="0" max="100" class="form-control grade-input" placeholder="ציון מינימום">
+          <button type="button" (click)="addRequest()" class="btn-inline-add">+</button>
+        </div>
+        <button type="button" (click)="addProperty()" class="btn-add-new">הוספת מאפיין חדש</button>
+      </div>
+
+      <!-- דרישות שנבחרו -->
+      <div class="selected-properties" *ngIf="selectedRequests.length > 0">
+        <h4>דרישות שנוספו:</h4>
+        <div *ngFor="let req of selectedRequests; let i = index" class="property-tag">
+          <span>ציון מינימום: {{ req.minGradeProperty }} |
+            @for(a of properties; track a; let i = $index) {
+            @if(a.id == req.propertyId) { {{a.description}} }}
+          </span>
+          <button type="button" (click)="removeRequest(i)" class="btn-remove-property">✕</button>
+        </div>
+      </div>
+
+      <!-- כפתורים -->
+      <div class="form-actions">
+        <button type="submit" class="btn-save">{{ postToEdit ? 'עדכן משרה' : 'הוסף משרה' }}</button>
+        <button type="button" (click)="close()" class="btn-cancel">ביטול</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<app-add-branch *ngIf="flagBranches" (submitBranch)="handleBranch($event)" (closeModal)="flagBranches = false"></app-add-branch>
+<app-add-position *ngIf="flagPositions" (submitPosition)="handlePosition($event)" (closeModal)="flagPositions = false"></app-add-position>
+<app-add-property *ngIf="flagProperty" (submitProperty)="handleProperty($event)" (closeModal)="flagProperty = false"></app-add-property>

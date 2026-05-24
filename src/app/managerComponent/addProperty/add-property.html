@@ -1,0 +1,18 @@
+<div class="mini-modal-overlay">
+  <div class="mini-modal">
+    <div class="mini-header">
+      <h3>הוספת מאפיין</h3>
+      <button class="mini-close" type="button" (click)="close()">✕</button>
+    </div>
+    <form [formGroup]="propertyForm" (ngSubmit)="submit()">
+      <div class="mini-field">
+        <label>תיאור המאפיין</label>
+        <input type="text" formControlName="description" placeholder="לדוגמה: עבודת צוות">
+      </div>
+      <div class="mini-actions">
+        <button type="submit" class="mini-btn-save">שמור</button>
+        <button type="button" class="mini-btn-cancel" (click)="close()">ביטול</button>
+      </div>
+    </form>
+  </div>
+</div>

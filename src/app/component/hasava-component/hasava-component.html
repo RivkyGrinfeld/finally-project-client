@@ -1,0 +1,135 @@
+<div *ngIf="!isPro()" class="pro-gate">
+  <div class="pro-gate-card">
+    <div class="pro-shimmer"></div>
+    <div class="pro-gate-badge">PRO</div>
+    <h2>ניתוח כתב יד עם בינה מלאכותית</h2>
+    <p class="pro-subtitle">העלה תמונה של כתב יד וקבל ניתוח אישיותי מעמיק — תכונות, חוזקות והתאמה למשרות</p>
+    <div class="pro-features">
+      <div class="pro-feature">
+        <span class="feature-check">✓</span>
+        <span>ניתוח גרפולוגי AI מתקדם</span>
+      </div>
+      <div class="pro-feature">
+        <span class="feature-check">✓</span>
+        <span>זיהוי תכונות אישיות</span>
+      </div>
+      <div class="pro-feature">
+        <span class="feature-check">✓</span>
+        <span>התאמה אוטומטית למשרות</span>
+      </div>
+    </div>
+    <button class="btn-upgrade" (click)="goToPayment()">שדרג ל-PRO</button>
+    <p class="pro-price-hint">החל מ-₪29 לחודש</p>
+  </div>
+</div>
+
+<div *ngIf="isPro()" class="ai-page">
+
+  <!-- Hero Section - AI Promotion -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">חדש במערכת</div>
+      <h1 class="hero-title">התאמה חכמה<br>מבוססת בינה מלאכותית</h1>
+      <p class="hero-subtitle">
+        המערכת שלנו משלבת ניתוח גרפולוגי מתקדם עם AI כדי לספק התאמה מדויקת יותר בין מועמדים למשרות.
+        העלו תמונה של כתב יד והמערכת תנתח תכונות אישיות ומקצועיות.
+      </p>
+      <div class="hero-features">
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <div class="feature-text">
+            <strong>ניתוח רב-שכבתי</strong>
+            <span>שילוב ציוני מבחן, AI וגרפולוגיה</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="feature-text">
+            <strong>תוצאות מיידיות</strong>
+            <span>ניתוח תוך שניות בלבד</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div class="feature-text">
+            <strong>דיוק גבוה</strong>
+            <span>אלגוריתם מבוסס GPT-4</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="visual-card">
+        <div class="visual-rings">
+          <div class="ring ring-1"></div>
+          <div class="ring ring-2"></div>
+          <div class="ring ring-3"></div>
+        </div>
+        <div class="visual-center">
+          <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><path d="M12 6v6l4 2"/></svg>
+          <span>AI Analysis</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Upload Section -->
+  <section class="upload-section">
+    <div class="upload-header">
+      <h2>ניתוח כתב יד</h2>
+      <p>העלו תמונה ברורה של כתב יד לניתוח גרפולוגי מבוסס AI</p>
+    </div>
+
+    <div class="upload-area" (click)="fileInput.click()" 
+         [class.has-file]="selectedFile"
+         (dragover)="onDragOver($event)" 
+         (drop)="onDrop($event)">
+      
+      <input #fileInput type="file" accept="image/*" (change)="onFileChange($event)" hidden>
+      
+      <div *ngIf="!selectedFile" class="upload-placeholder">
+        <div class="upload-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <p class="upload-text">גררו תמונה לכאן או לחצו לבחירת קובץ</p>
+        <span class="upload-hint">PNG, JPG, JPEG עד 10MB</span>
+      </div>
+
+      <div *ngIf="selectedFile" class="upload-preview">
+        <div class="file-info">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <div>
+            <p class="file-name">{{ selectedFile.name }}</p>
+            <span class="file-size">{{ formatFileSize(selectedFile.size) }}</span>
+          </div>
+        </div>
+        <button class="btn-remove" (click)="removeFile($event)">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <button class="btn-analyze" [disabled]="!selectedFile || isAnalyzing" (click)="analyze()">
+      <span *ngIf="!isAnalyzing">התחל ניתוח</span>
+      <span *ngIf="isAnalyzing" class="loading-text">
+        <span class="spinner"></span>
+        מנתח...
+      </span>
+    </button>
+
+    <!-- Results -->
+    <div *ngIf="analysisResult" class="results-section">
+      <h3>תוצאות הניתוח</h3>
+      <div class="results-content">
+        <p>{{ analysisResult }}</p>
+      </div>
+    </div>
+  </section>
+
+</div>

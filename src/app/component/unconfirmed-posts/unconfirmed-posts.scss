@@ -1,0 +1,86 @@
+.posts-container {
+  animation: slideUp 0.3s ease-out;
+}
+
+.header {
+  margin-bottom: 28px;
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text, #111827);
+  }
+}
+
+.no-posts {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--text-muted, #9ca3af);
+  font-size: 0.95rem;
+}
+
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.post-card {
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: var(--radius, 12px);
+  padding: 24px;
+  transition: var(--transition);
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--border-focus, #a5b4fc);
+    transform: translateY(-2px);
+  }
+
+  h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text, #111827);
+    margin-bottom: 4px;
+  }
+
+  p {
+    font-size: 0.83rem;
+    color: var(--text-secondary, #6b7280);
+    margin: 4px 0;
+  }
+
+  .city { font-weight: 500; }
+  .salary { color: var(--success, #10b981); font-weight: 600; }
+}
+
+.card-actions {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border, #e5e7eb);
+}
+
+.btn-confirm {
+  padding: 8px 16px;
+  background: var(--success, #10b981);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm, 8px);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover {
+    opacity: 0.9;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,24 @@
+<div class="mini-modal-overlay">
+  <div class="mini-modal">
+    <div class="mini-header">
+      <h3>הוספת תפקיד</h3>
+      <button class="mini-close" type="button" (click)="close()">✕</button>
+    </div>
+    <form [formGroup]="positionForm" (ngSubmit)="submit()">
+      <div class="mini-field">
+        <label>ענף</label>
+        <select formControlName="branchId">
+          <option *ngFor="let branch of branches" [value]="branch.id">{{branch.description}}</option>
+        </select>
+      </div>
+      <div class="mini-field">
+        <label>תיאור התפקיד</label>
+        <input type="text" formControlName="description" placeholder="לדוגמה: מפתח Backend">
+      </div>
+      <div class="mini-actions">
+        <button type="submit" class="mini-btn-save">שמור</button>
+        <button type="button" class="mini-btn-cancel" (click)="close()">ביטול</button>
+      </div>
+    </form>
+  </div>
+</div>

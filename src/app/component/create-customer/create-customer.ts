@@ -6,6 +6,7 @@ import { CustomersService } from '../../service/customers-service';
 import { Branch } from '../../model/Branch';
 import { BranchesService } from '../../service/branches-service';
 import { firstValueFrom } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true, // חובה
@@ -32,7 +33,7 @@ export class CreateCustomer {
   customerService = inject(CustomersService);
    branchService = inject(BranchesService)
   branches!: Branch[]
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,private router: Router) {
     this.personalForm = this.fb.group({
       id: ['', Validators.required],
       firstName: ['', Validators.required],
@@ -63,6 +64,7 @@ export class CreateCustomer {
       code: ['', Validators.required]
     });
   }
+
  async ngOnInit() {
     this.branches = await firstValueFrom(this.branchService.Init())
   }
@@ -88,48 +90,7 @@ onMaritalStatusChange(event: any) {
     this.fileForm.patchValue({ file });
   }
 
-// submit() {
-//   const data = {
-//     ...this.personalForm.value,
-//     ...this.creditForm.value
-//   };
-//   console.log(data);
-//   this.customerService.addCustomer(data).subscribe(
-//     response => console.log('Customer saved', response),
-//     error => console.error('Error', error)
-//   );
-// }
-//   submit() {
-//   const formData = new FormData();
 
-//   // מוסיף את הנתונים מהטופס ל-FormData
-//   const personalData = this.personalForm.value;
-//   // const creditData = this.creditForm.value;
-
-//   for (const key in personalData) {
-//     if (personalData.hasOwnProperty(key)) {
-//       formData.append(key, personalData[key]);
-//     }
-//   }
-
-//   // for (const key in creditData) {
-//   //   if (creditData.hasOwnProperty(key)) {
-//   //     formData.append(key, creditData[key]);
-//   //   }
-//   // }
-
-//   // מוסיף את הקובץ ל-FormData
-//   const fileInput = this.fileForm.controls['file'].value;
-//   if (fileInput) {
-//     formData.append('cvFile', fileInput, fileInput.name);
-//   }
-
-//   // שולח את הנתונים לשרת
-//   this.customerService.addCustomer(formData).subscribe(
-//     response => console.log('Customer saved', response),
-//     error => console.error('Error', error)
-//   );
-// }
 submit() {
   const formData = new FormData();
 
@@ -165,7 +126,9 @@ submit() {
   // שולח את הנתונים לשרת
   this.customerService.addCustomer(formData).subscribe(
     response => console.log('Customer saved', response),
-    error => console.error('Error', error)
+    error => console.error('Error', error),
+    
   );
+this.router.navigate(['/Login'])
 }
 }

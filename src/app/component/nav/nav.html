@@ -21,14 +21,18 @@
       <i class="pi pi-user-plus"></i>
       <span>הרשמה</span>
     </a>
+       <a *ngIf="userService.status() != 0 " routerLink="dashboard" routerLinkActive="active" class="nav-link">
+      <i class="pi pi-file-edit"></i>
+      <span>Dashboard</span>
+    </a>
     <a *ngIf="userService.status() == 0" routerLink="Login" routerLinkActive="active" class="nav-link">
       <i class="pi pi-sign-in"></i>
       <span>התחברות</span>
     </a>
-    <a *ngIf="userService.status() == 0" routerLink="hasava" routerLinkActive="active" class="nav-link">
+    <!-- <a *ngIf="userService.status() == 0" routerLink="hasava" routerLinkActive="active" class="nav-link">
       <i class="pi pi-hasava"></i>
       <span>NEW</span>
-    </a>
+    </a> -->
     <a *ngIf="userService.status() != 0" routerLink="PostList" routerLinkActive="active" class="nav-link">
       <i class="pi pi-briefcase"></i>
       <span>משרות</span>
@@ -54,15 +58,12 @@
       <span>ניתוח AI</span>
       <span class="pro-badge">PRO</span>
     </a>
-      <a *ngIf="userService.status() == 3" routerLink="dashboard" routerLinkActive="active" class="nav-link">
-      <i class="pi pi-file-edit"></i>
-      <span>Dashboard</span>
+    <a *ngIf="userService.status() == 2" routerLink="company-unconfirmed-posts" routerLinkActive="active" class="nav-link">
+      <i class="pi pi-clock"></i>
+      <span>משרות ממתינות לאישור</span>
     </a>
-    
-    <a *ngIf="userService.status() == 1" routerLink="dashboard" routerLinkActive="active" class="nav-link">
-      <i class="pi pi-chart-bar"></i>
-      <span>דשבורד</span>
-    </a>
+   
+ 
   </nav>
 
   <!-- Logout -->

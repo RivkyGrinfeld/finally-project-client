@@ -23,9 +23,10 @@
       No companies found
     </div>
 
-    <div *ngFor="let company of filteredCompanies" class="post-card">
+    <div *ngFor="let company of companiesWithNums" class="post-card">
       <h2>{{ company.name }}</h2>
       <p>{{ company.email }}</p>
+      <p>{{ company.num }} משרות</p>
     </div>
 
   </div>

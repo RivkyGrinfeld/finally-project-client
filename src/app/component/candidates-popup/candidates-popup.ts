@@ -30,7 +30,6 @@ export class CandidatesPopupComponent implements OnInit {
   @Input() applies: Apply[] = []
   @Input() requests: Request[] = []
   @Output() close = new EventEmitter<void>();
-
   customers: Customer[] = []
   tests: Tests[] = []
   posts: Post[] = []
@@ -43,14 +42,15 @@ export class CandidatesPopupComponent implements OnInit {
   http = inject(HttpClient)
   candidates: CandidateView[] = []
   topCandidates: CandidateView[] = []
-  propertiesService:PropertiesService = inject(PropertiesService)
-properties:Properties[] = []
+  propertiesService: PropertiesService = inject(PropertiesService)
+  post: Post = new Post()
+  properties: Properties[] = []
   async ngOnInit() {
     this.properties = await firstValueFrom(this.propertiesService.Init());
     this.requests = await firstValueFrom(this.requestsService.init());
     this.applies = await firstValueFrom(this.appliesService.init());
     this.applies = this.applies.filter(a => a.postId == this.postId);
-    if(this.userService.status() == 2){
+    if (this.userService.status() == 2) {
       this.applies = this.applies.filter(a => a.confirmed == true);
     }
     this.customers = await firstValueFrom(this.customerService.init());
@@ -61,11 +61,13 @@ properties:Properties[] = []
         try {
           const test = await firstValueFrom(this.testService.getTestByCustomer(custId));
           if (test) this.tests.push(test);
-        } catch {}
+        } catch { }
       }
-    } catch {}
+    } catch { }
     this.posts = await firstValueFrom(this.postService.Init());
     await this.buildCandidates()
+    this.post = this.posts.find(p => p.id == this.postId) ?? new Post();
+
 
   }
 
@@ -91,23 +93,24 @@ properties:Properties[] = []
       // Real AI analysis of CV
       let aiScore = 0;
       if (customer?.fileName) {
-        try {
-          const candidateInfo = customer.url
-          // const candidateInfo = `שם: ${customer.firstName} ${customer.lastName}, עיר: ${customer.city}, אימייל: ${customer.email}, טלפון: ${customer.phone}`;
-          const res: any = await firstValueFrom(
-            this.http.post('http://localhost:7006/api/cv/analyze-match', {
-              fileName: customer.fileName,
-              candidateInfo: candidateInfo,
-              requirements: requirementDescriptions
-            })
-          );
-          aiScore = res.score ?? 0;
-        } catch {
-          aiScore = 0;
-        }
+        // try {
+        //   const candidateInfo = customer.url
+        //   // const candidateInfo = `שם: ${customer.firstName} ${customer.lastName}, עיר: ${customer.city}, אימייל: ${customer.email}, טלפון: ${customer.phone}`;
+        //   const res: any = await firstValueFrom(
+        //     this.http.post('https://localhost:7006/api/cv/analyze-match', {
+        //       fileName: customer.fileName,
+        //       candidateInfo: candidateInfo,
+        //       requirements: requirementDescriptions
+        //     })
+        //   );
+        //   aiScore = res.score ?? 0;
+        // } catch {
+        //   aiScore = 0;
+        // }
+        aiScore = a.aiMatched ?? 1;
       }
 
-      const finalScore = (matchScore * 0.5) + (testScore * 0.3) + (aiScore * 0.2);
+      const finalScore = (matchScore * 0.4) + (testScore * 0.3) + (aiScore * 0.3);
 
       this.candidates.push({
         custId: a.custId,
@@ -178,6 +181,7 @@ properties:Properties[] = []
 
   }
   toSuggest() {
+
     let numberOfCandidated = this.posts.find(x => x.id == this.postId)?.maxCadidated
     if (numberOfCandidated == undefined)
       numberOfCandidated = 0
@@ -188,8 +192,13 @@ properties:Properties[] = []
     }
 
     else {
+
       this.candidates.filter(x => x.confirmed).forEach(x => this.appliesService.confirmedApply(
-        this.getApplyByPostAndCust(this.postId ?? 0, x.custId) ?? new Apply()).subscribe())
+        this.getApplyByPostAndCust(this.postId ?? 0, x.custId) ?? new Apply()).subscribe(() => {
+          this.postService.setAvailble(this.postId ?? 0).subscribe(() => {
+            this.close.emit();
+          })
+        }))
     }
   }
   getApplyByPostAndCust(p: number, c: string) {
@@ -199,12 +208,12 @@ properties:Properties[] = []
       a.confirmed = true
     return a
   }
-fixUrl(path: string): string {
-  const fileName = path.split('\\').pop() || '';
-  
-  return 'http://localhost:7006/Uploads/' + encodeURIComponent(fileName);
-}
-closeFun() {
+  fixUrl(path: string): string {
+    const fileName = path.split('\\').pop() || '';
+
+    return 'https://localhost:7006/Uploads/' + encodeURIComponent(fileName);
+  }
+  closeFun() {
     this.close.emit(); // משתמש ב-EventEmitter כדי להודיע על סגירת הפופאפ
-}
+  }
 }

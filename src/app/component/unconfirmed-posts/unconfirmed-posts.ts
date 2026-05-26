@@ -38,6 +38,7 @@ export class UnconfirmedPosts implements OnInit {
       if (this.postsService.posts.length == 0)
         this.posts = await firstValueFrom(this.postsService.getUnconfirmedPosts());
       else this.posts = this.postsService.posts
+      this.posts = this.posts.filter(p => !p.isConfirmed);
       console.log('Loaded posts:', this.posts);
     } catch (error) {
       console.error('Failed to load posts', error);

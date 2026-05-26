@@ -94,7 +94,7 @@
             </tbody>
 
         </table>
-        <button *ngIf="userService.status() != 2" (click)="toSuggest()">הגשה</button>
+        <button *ngIf="userService.status() != 2 && post.isAvailble" (click)="toSuggest()">הגשה</button>
     </div>
 
 </div>

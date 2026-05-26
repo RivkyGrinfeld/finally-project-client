@@ -7,7 +7,7 @@ import { CvDto } from '../model/CvDto';
   providedIn: 'root'
 })
 export class CvChatService {
-  private apiUrl = 'http://localhost:7006/api/cv/';
+  private apiUrl = 'https://localhost:7006/api/cv/';
 
   constructor(private http: HttpClient) {}
 

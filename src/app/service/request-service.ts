@@ -9,7 +9,7 @@ import { Request } from '../model/Request';
 })
 export class RequestService {
      requests:Array<Request>  = new Array<Request>();
-     BASEURL: String = "http://localhost:7006/api/Request"
+     BASEURL: String = "https://localhost:7006/api/Request"
     http =inject(HttpClient) 
  
   init ():Observable<Array<Request>>{

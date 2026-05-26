@@ -10,6 +10,7 @@ import { HasavaComponent } from './component/hasava-component/hasava-component';
 import { CvChatComponent } from './component/cv-chat-component/cv-chat-component';
 import { ProPaymentComponent } from './component/pro-payment/pro-payment';
 import { LandingComponent } from './component/landing/landing';
+import { CompanyUnconfirmedPostsComponent } from './component/company-unconfirmed-posts/company-unconfirmed-posts';
 
 export const routes: Routes = [
     { path: '', component: LandingComponent },
@@ -23,4 +24,5 @@ export const routes: Routes = [
     { path: 'hasava', component: HasavaComponent },
     { path: 'Koch', component: CvChatComponent },
     { path: 'ProPayment', component: ProPaymentComponent },
+    { path: 'company-unconfirmed-posts', component: CompanyUnconfirmedPostsComponent },
 ];

@@ -4,4 +4,5 @@ custId!:string
 postId!:number
 confirmed:boolean = false
 date!:Date
+aiMatched:number = 0
 }

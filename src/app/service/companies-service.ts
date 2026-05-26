@@ -8,7 +8,7 @@ import { first, firstValueFrom, Observable } from 'rxjs';
 })
 export class CompaniesService {
   companies: Array<Companies> = new Array<Companies>();
-  BASEURL: String = "http://localhost:7006/api/Companies/"
+  BASEURL: String = "https://localhost:7006/api/Companies/"
 
   http = inject(HttpClient)
 
@@ -39,5 +39,6 @@ export class CompaniesService {
     const company = this.companies.find(c => c.id.toString() === id);
     return company ? company.name : 'חברה לא נמצאה';
   }
+  
 }
 

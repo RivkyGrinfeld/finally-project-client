@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CompaniesService } from '../../service/companies-service';
 import { Companies } from '../../model/Companies';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AddCompany } from '../../managerComponent/add-company/add-company';
+import { PostService } from '../../service/post-service';
+import { log } from 'echarts/types/src/util/log.js';
 
 @Component({
   selector: 'app-companies-list',
@@ -18,10 +20,10 @@ export class CompaniesList implements OnInit {
    companies: Companies[] = [];
   filteredCompanies: Companies[] = [];
   searchTerm: string = '';
-
+  companiesWithNums: any[] = [];
   showModal: boolean = false;
   companyForm: FormGroup;
-
+  postService = inject(PostService)
   constructor(
     private companyService: CompaniesService,
     private fb: FormBuilder
@@ -37,6 +39,12 @@ export class CompaniesList implements OnInit {
 
   ngOnInit(): void {
     this.loadCompanies();
+    this.companiesWithNums = this.companies.map((company) => ({
+      ...company,
+      num: this.postService.getNumOfPosts(company.id)
+    }));
+    console.log(this.companiesWithNums+"POSTS NUMS");
+    alert(this.companiesWithNums.length + " חברות נמצאו!");
   }
 
   loadCompanies(): void {
@@ -50,6 +58,11 @@ export class CompaniesList implements OnInit {
     this.filteredCompanies = this.companies.filter(c =>
       c.name.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
+    this.companiesWithNums = this.filteredCompanies.map((company) => ({
+      ...company,
+      num: this.postService.getNumOfPosts(company.id)
+    }));
+    
   }
 
   openModal(): void {

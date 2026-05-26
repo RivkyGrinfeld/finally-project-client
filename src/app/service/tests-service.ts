@@ -9,7 +9,7 @@ import { UserService } from './user-service';
 })
 export class TestsService {
   tests: Array<Tests> = new Array<Tests>();
-  BASEURL: String = "http://localhost:7006/api/PointTest"
+  BASEURL: String = "https://localhost:7006/api/PointTest"
   http = inject(HttpClient)
   userService = inject(UserService)
 

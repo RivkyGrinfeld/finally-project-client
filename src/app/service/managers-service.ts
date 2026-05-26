@@ -9,7 +9,7 @@ import { log } from 'echarts/types/src/util/log.js';
 })
 export class ManagersService {
   managers: Array<Manager> = new Array<Manager>();
-  BASEURL: String = "http://localhost:7006/api/Manager/"
+  BASEURL: String = "https://localhost:7006/api/Manager/"
   http = inject(HttpClient)
   // ngOnInit() {
   //   this.http.get<Array<Manager>>(this.BASEURL + "/GetAll").subscribe(res => this.managers = res)

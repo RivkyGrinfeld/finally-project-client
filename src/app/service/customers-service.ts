@@ -9,7 +9,7 @@ import { log } from 'echarts/types/src/util/log.js';
 })
 export class CustomersService {
   customers: Array<Customer> = new Array<Customer>();
-  BASEURL: String = "http://localhost:7006/api/Customers"
+  BASEURL: String = "https://localhost:7006/api/Customers"
   http = inject(HttpClient)
   ngOnInit() {
     this.http.get<Array<Customer>>(this.BASEURL + "/GetAll").subscribe(res => this.customers = res)
@@ -37,6 +37,13 @@ export class CustomersService {
   getCustomerdByName(id: string) {
     const manager = this.customers.find(m => m.id.toString() === id);
     return manager?.firstName ?? "not found";
+  }
+  getCustomerById(id: string): Customer {
+    if(!this.customers || this.customers.length === 0) {
+      this.init().subscribe(res => this.customers = res)
+    }
+    const manager = this.customers.find(m => m.id.toString() === id);
+    return manager ?? new Customer();
   }
 }
 

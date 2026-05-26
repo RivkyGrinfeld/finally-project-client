@@ -1,23 +1,23 @@
-<div class="mini-modal-overlay">
-  <div class="mini-modal">
-    <div class="mini-header">
-      <h3>הוספת תפקיד</h3>
-      <button class="mini-close" type="button" (click)="close()">✕</button>
+<div class="form-modal">
+  <div class="form-container">
+    <div class="form-header">
+      <h2>הוספת תפקיד</h2>
+      <button class="btn-close" type="button" (click)="close()">✕</button>
     </div>
-    <form [formGroup]="positionForm" (ngSubmit)="submit()">
-      <div class="mini-field">
+    <form [formGroup]="positionForm" (ngSubmit)="submit()" class="form-content">
+      <div class="form-group">
         <label>ענף</label>
-        <select formControlName="branchId">
+        <select formControlName="branchId" class="form-control">
           <option *ngFor="let branch of branches" [value]="branch.id">{{branch.description}}</option>
         </select>
       </div>
-      <div class="mini-field">
+      <div class="form-group">
         <label>תיאור התפקיד</label>
-        <input type="text" formControlName="description" placeholder="לדוגמה: מפתח Backend">
+        <input type="text" formControlName="description" placeholder="לדוגמה: מפתח Backend" class="form-control">
       </div>
-      <div class="mini-actions">
-        <button type="submit" class="mini-btn-save">שמור</button>
-        <button type="button" class="mini-btn-cancel" (click)="close()">ביטול</button>
+      <div class="form-actions">
+        <button type="submit" class="btn-save">שמור</button>
+        <button type="button" class="btn-cancel" (click)="close()">ביטול</button>
       </div>
     </form>
   </div>

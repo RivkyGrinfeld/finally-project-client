@@ -1,13 +1,11 @@
 <div class="container">
 
   <!-- שלב 1 -->
-
   <form *ngIf="step === 1" [formGroup]="personalForm" class="card" [@stepAnimation]>
+
     <div class="tabs">
       <div class="tab active">אישי</div>
-      <div class="tab">אשראי</div>
       <div class="tab">קובץ</div>
-      <div class="tab">אימות</div>
     </div>
 
     <div class="field">
@@ -26,49 +24,37 @@
     </div>
 
     <div class="field">
-      <input formControlName="bornDate" required type="date">
-      <label>תאריך לידה</label>
-    </div>
-
-    <div class="field">
       <input formControlName="id" required>
       <label>מס' זהות</label>
     </div>
+
     <div class="field">
       <input formControlName="email" required>
       <label>אימייל</label>
     </div>
-<div class="field">
+
+    <div class="field">
       <input formControlName="userName" required>
       <label>שם משתמש</label>
-    </div><div class="field">
+    </div>
+
+    <div class="field">
       <input formControlName="password" required>
       <label>סיסמה</label>
     </div>
+
     <div class="field">
       <input formControlName="phone" required>
       <label>טלפון</label>
     </div>
+
     <div class="field">
       <label for="branch">ענף</label>
       <select formControlName="branchId" required>
-       <option *ngFor="let branch of branches" [value]=branch.id>{{branch.description}}</option>
+        <option *ngFor="let branch of branches" [value]="branch.id">
+          {{ branch.description }}
+        </option>
       </select>
-    </div>
-
-    <div class="field">
-      <label for="maritalStatus">מצב משפחתי</label>
-      <select formControlName="statusId" required (change)="onMaritalStatusChange($event)">
-        <option value="1">רווק</option>
-        <option value="2">נשוי</option>
-        <option value="3">אלמן</option>
-        <option value="4">גרוש</option>
-      </select>
-    </div>
-
-    <div class="field" *ngIf="personalForm.get('statusId')?.value !== '1'">
-      <input formControlName="numOfChildren" type="number" required>
-      <label>מס' ילדים</label>
     </div>
 
     <button type="button" class="btn" (click)="next()">
@@ -77,45 +63,12 @@
 
   </form>
 
-  <!-- שלב 2 -->
-  <form *ngIf="step === 2" [formGroup]="creditForm" class="card" [@stepAnimation]>
+  <!-- שלב 2 - קובץ -->
+  <form *ngIf="step === 2" [formGroup]="fileForm" class="card" [@stepAnimation]>
+
     <div class="tabs">
       <div class="tab">אישי</div>
-      <div class="tab active">אשראי</div>
-      <div class="tab">קובץ</div>
-      <div class="tab">אימות</div>
-    </div>
-
-    <div class="field">
-      <input formControlName="cardNumber" required>
-      <label>מספר כרטיס</label>
-    </div>
-
-    <div class="field">
-      <input formControlName="exp" required>
-      <label>תוקף</label>
-    </div>
-
-    <div class="field">
-      <input formControlName="cvv" required>
-      <label>CVV</label>
-    </div>
-
-    <button type="button" class="btn" (click)="prev()">חזור</button>
-    <button type="button" (click)="next()">הבא</button>
-    <!-- <button type="button" class="btn" (click)="next()" [disabled]="creditForm.invalid">
-      המשך
-    </button> -->
-
-  </form>
-
-  <!-- שלב 3 - קובץ -->
-  <form *ngIf="step === 3" [formGroup]="fileForm" class="card" [@stepAnimation]>
-    <div class="tabs">
-      <div class="tab">אישי</div>
-      <div class="tab">אשראי</div>
       <div class="tab active">קובץ</div>
-      <div class="tab">אימות</div>
     </div>
 
     <div class="upload-box">
@@ -123,28 +76,7 @@
     </div>
 
     <button type="button" class="btn" (click)="prev()">חזור</button>
-    <button type="button" class="btn" (click)="next()" [disabled]="fileForm.invalid">
-      המשך
-    </button>
-
-  </form>
-
-  <!-- שלב 4 - אימות -->
-  <form *ngIf="step === 4" [formGroup]="verifyForm" class="card" [@stepAnimation]>
-    <div class="tabs">
-      <div class="tab">אישי</div>
-      <div class="tab">אשראי</div>
-      <div class="tab">קובץ</div>
-      <div class="tab active">אימות</div>
-    </div>
-
-    <div class="field">
-      <input formControlName="code" required>
-      <label>קוד אימות</label>
-    </div>
-
-    <button type="button" class="btn" (click)="prev()">חזור</button>
-    <button type="button" class="btn" (click)="submit()">
+    <button type="button" class="btn" (click)="submit()" [disabled]="fileForm.invalid">
       סיום
     </button>
 

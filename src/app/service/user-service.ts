@@ -56,7 +56,7 @@ export class UserService {
   currentUser = signal<Users | null>(null);
   id = signal<string>("");
   users: Array<Users> = [];
-  BASEURL: String = "http://localhost:7006/api/User/";
+  BASEURL: String = "https://localhost:7006/api/User/";
   http = inject(HttpClient);
 
   async initTry() {

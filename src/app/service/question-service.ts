@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 export class QuestionService {
   
     questions: Array<Questions> = new Array<Questions>();
-    BASEURL: String = "http://localhost:7006/api/Questions"
+    BASEURL: String = "https://localhost:7006/api/Questions"
     http = inject(HttpClient)
     init(): Observable<Array<Questions>> {
       return this.http.get<Array<Questions>>(this.BASEURL + "/GetAll")

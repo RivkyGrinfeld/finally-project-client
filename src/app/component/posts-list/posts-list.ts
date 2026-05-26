@@ -169,6 +169,14 @@ import { UserService } from '../../service/user-service';
 import { RequestService } from '../../service/request-service';
 import { Request } from '../../model/Request';
 import { TestsService } from '../../service/tests-service';
+import { HttpClient } from '@angular/common/http';
+import { CustomersService } from '../../service/customers-service';
+import { Properties } from '../../model/Properties';
+import { PropertiesService } from '../../service/properties-service';
+import { Companies } from '../../model/Companies';
+import { Position } from '../../model/Position';
+import { CompaniesService } from '../../service/companies-service';
+import { PositionService } from '../../service/position-service';
 
 @Component({
   selector: 'app-posts-list',
@@ -190,15 +198,25 @@ export class PostsList implements OnInit {
   filterMatch: string = 'הכל';
   showPostDetail: boolean = false;
   showAddPostModal: boolean = false;
+  http = inject(HttpClient)
+  properties: Properties[] = []
+  requests: Request[] = []
+  propertiesService: PropertiesService = inject(PropertiesService)
 
   applyService: ApplyService = inject(ApplyService);
   userService = inject(UserService);
+  companiesService = inject(CompaniesService);
+  positionsService = inject(PositionService);
+  customerService = inject(CustomersService);
   postService: PostService = inject(PostService);
   requestService: RequestService = inject(RequestService);
   testsService: TestsService = inject(TestsService);
   applies: Apply[] = [];
   allRequests: Request[] = [];
-  customerPoints: any[] = []; // PointsTest array from customer's test
+  customerPoints: any[] = [];
+   // PointsTest array from customer's test
+   companies: Companies[] = [];
+   positions: Position[] = [];
   private cd = inject(ChangeDetectorRef);
 
   // constructor(private cd: ChangeDetectorRef) { }
@@ -208,8 +226,11 @@ export class PostsList implements OnInit {
       await this.userService.setStatus();
       console.log(this.userService.id + "!!!");
       console.log(this.userService.status() + "@@@");
-
+      this.properties = await firstValueFrom(this.propertiesService.Init());
+      this.requests = await firstValueFrom(this.requestService.init());
       this.posts = await firstValueFrom(this.postService.loadedData());
+      this.companies = await firstValueFrom(this.companiesService.getCompanies());
+      this.positions = await firstValueFrom(this.positionsService.loadPositions());
       await this.loadPosts();
       await this.allPosts();
       await this.loadMatchData();
@@ -250,19 +271,19 @@ export class PostsList implements OnInit {
 
     if (this.customerPoints.length > 0 && this.allRequests.length > 0) {
       // Calculate match score for each post based on test results
-      const scored = confirmedPosts.map( post => {
-        const postRequests =  this.allRequests.filter(r => r.postId === post.id);
+      const scored = confirmedPosts.map(post => {
+        const postRequests = this.allRequests.filter(r => r.postId === post.id);
         if (postRequests.length === 0) return { post, score: 50 }; // No requirements = neutral
 
         let matched = 0;
-        postRequests.forEach( req => {
-          const point =  this.customerPoints.find((p: any) => p.propertyId === req.propertyId);
+        postRequests.forEach(req => {
+          const point = this.customerPoints.find((p: any) => p.propertyId === req.propertyId);
           if (point && point.gradeProperty >= req.minGradeProperty) {
             matched++;
           }
         });
 
-        const score =  Math.round((matched / postRequests.length) * 100);
+        const score = Math.round((matched / postRequests.length) * 100);
         return { post, score };
       });
 
@@ -271,7 +292,6 @@ export class PostsList implements OnInit {
         .filter(s => s.score >= 60)
         .sort((a, b) => b.score - a.score)
         .map(s => s.post);
-      alert(this.recommendedPosts.length + " משרות מומלצות נמצאו עבורך!");
     } else {
       // Fallback: show top salary posts if no test data
       this.recommendedPosts = confirmedPosts
@@ -285,16 +305,15 @@ export class PostsList implements OnInit {
   }
 
   async allPosts() {
-    this.filteredPosts = this.posts;
+    // this.filteredPosts = this.posts;
   }
 
   filterPosts(): void {
-    const search = this.searchText.toLowerCase();
     this.filteredPosts = this.posts.filter(post => {
+      const city = (post.city ?? '').toLowerCase();
+
       const matchesSearch =
-        (post.city ?? '').toLowerCase().includes(search) ||
-        (post.jobTitle ?? '').toLowerCase().includes(search) ||
-        (post.jobDescription ?? '').toLowerCase().includes(search);
+        city.includes(this.searchText.toLowerCase());
 
       const matchesAvailable =
         this.filterAvailable === 'הכל' ||
@@ -311,8 +330,13 @@ export class PostsList implements OnInit {
         this.filterMatch === 'הכל' ||
         (this.filterMatch === 'recommended' && this.recommendedPosts.some(r => r.id === post.id));
 
-      return matchesSearch && matchesAvailable && matchesSalary && matchesMatchFilter;
+      // סינון לפי חברה למנהל (סטטוס 2)
+      const matchesCompany =
+        this.userService.status() !== 2 || post.companyId === Number(this.userService.id());
+      return matchesSearch && matchesAvailable && matchesSalary && matchesMatchFilter && matchesCompany;
     });
+    console.log(this.filteredPosts.length + "!!");
+
   }
 
   selectPost(post: Post): void {
@@ -370,12 +394,14 @@ export class PostsList implements OnInit {
     return isAvailable ? 'green' : 'red';
   }
 
-  getCompanyName(company: any): string {
-    return typeof company === 'string' ? company : company?.name || 'לא ידוע';
+  getCompanyName(companyId: number): string {
+    const company = this.companies.find(c => c.id === companyId);
+    return company ? company.name :  'לא ידוע';
   }
 
-  getPositionName(position: any): string {
-    return typeof position === 'string' ? position : position?.description || 'לא ידוע';
+  getPositionName(positionId: number): string {
+    const position = this.positions.find(p => p.id === positionId);
+    return position ? position.description : 'לא ידוע';
   }
 
   openAllCust(postId: number) {
@@ -401,18 +427,35 @@ export class PostsList implements OnInit {
     this.selectedPostId = null;
   }
 
-  getAppliesByPostId(postId: number){
+  getAppliesByPostId(postId: number) {
     this.applyService.getAppliesByPostId(postId).subscribe(res => this.applies = res);
     this.applies = this.applies.filter(a => a.confirmed == true);
-       this.showCandidatesModal = true;
+    this.showCandidatesModal = true;
     this.cd.detectChanges();
   }
-  toApply(post: Post) {
+  async toApply(post: Post) {
     let a = new Apply();
     a.confirmed = false;
     a.custId = this.userService.id() ?? '';
     a.postId = post.id;
     a.date = new Date();
+
+    const postRequests = this.requests.filter(r => r.postId == post.id);
+    if (postRequests.length == 0) {
+      alert("אין דרישות למשרה זו, הגשת מועמדות בוצעה בהצלחה!");
+    }
+    const requirementDescriptions = postRequests.map(r => `מאפיין ${this.properties.find(p => p.id == r.propertyId)?.description}: ציון מינימלי ${r.minGradeProperty}`);
+
+    const customer = this.customerService.getCustomerById(a.custId);
+    const candidateInfo = customer.url;
+    const res: any = await firstValueFrom(
+      this.http.post('https://localhost:7006/api/cv/analyze-match', {
+        fileName: customer.fileName ,
+        candidateInfo: candidateInfo,
+        requirements: requirementDescriptions
+      })
+    );
+    a.aiMatched = res.score ?? 0;
     this.applyService.createApply(a).subscribe(res => {
       this.showSuccessPopup = true;
     });
@@ -423,7 +466,7 @@ export class PostsList implements OnInit {
   closeSuccessPopup() {
     this.showSuccessPopup = false;
   }
-   isGridView = false;  // ברירת מחדל היא רשימה
+  isGridView = false;  // ברירת מחדל היא רשימה
 
   toggleView() {
     this.isGridView = !this.isGridView;  // משנה את מצב התצוגה

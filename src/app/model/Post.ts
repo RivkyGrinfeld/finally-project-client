@@ -10,6 +10,7 @@ export class Post {
     salary!:number;
     date!:Date;
     isConfirmed!:boolean;
+    createdAt!:Date;
     // Company
     // Position
     jobTitle!:string;

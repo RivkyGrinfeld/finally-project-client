@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class AnswersService {
   answers: Array<Answers> = new Array<Answers>();
-  BASEURL: String = "http://localhost:7006/api/Answers"
+  BASEURL: String = "https://localhost:7006/api/Answers"
   http = inject(HttpClient)
   init(): Observable<Array<Answers>> {
     return this.http.get<Array<Answers>>(this.BASEURL + "/GetAll")

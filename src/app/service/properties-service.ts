@@ -9,7 +9,7 @@ import { firstValueFrom } from 'rxjs';
 })
 export class PropertiesService {
     properties:Array< Properties>  = new Array<Properties>();
-    BASEURL: String = "http://localhost:7006/api/Properties"
+    BASEURL: String = "https://localhost:7006/api/Properties"
 
   http =inject(HttpClient) 
   async ngOnInit(){

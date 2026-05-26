@@ -8,7 +8,7 @@ import { firstValueFrom, Observable } from 'rxjs';
 })
 export class BranchesService {
   branches: Array<Branch> = new Array<Branch>();
-  BASEURL: String = "http://localhost:7006/api/Branches"
+  BASEURL: String = "https://localhost:7006/api/Branches"
   http = inject(HttpClient)
 
 InitB(){

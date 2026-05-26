@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class ApplyService {
   applies: Array<Apply> = new Array<Apply>();
-  BASEURL: String = "http://localhost:7006/api/Apply"
+  BASEURL: String = "https://localhost:7006/api/Apply"
   http = inject(HttpClient)
   init(): Observable<Array<Apply>> {
     return this.http.get<Array<Apply>>(this.BASEURL + "/GetAll")

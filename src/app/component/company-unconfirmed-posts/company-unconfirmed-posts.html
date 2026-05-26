@@ -1,0 +1,17 @@
+<div class="company-unconfirmed-posts-container">
+  <h2>משרות ממתינות לאישור</h2>
+  <div *ngIf="posts.length === 0" class="no-posts">לא נמצאו משרות ממתינות לאישור.</div>
+  <div class="posts-list">
+    <div *ngFor="let post of posts" class="post-card">
+      <h3>{{ post.jobTitle }}</h3>
+      <div class="post-info">
+        <span>עיר: {{ post.city }}</span>
+        
+        <span>כותרת משרה: {{ post.jobTitle }}</span>
+        <span>תאריך יצירה: {{ post.createdAt | date:'MM/dd/yyyy' }}</span>
+      </div>
+      <div class="post-desc">{{ post.jobDescription }}</div>
+    </div>
+  </div>
+</div>
+

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -12,8 +13,9 @@ import { Router } from '@angular/router';
 export class HasavaComponent {
   selectedFile: File | null = null;
   isAnalyzing: boolean = false;
-  analysisResult: string = '';
-
+  analysisResult: any = '';
+    http = inject(HttpClient)
+  BASEURL: String = "https://localhost:7006/api"
   constructor(private router: Router) {}
 
   isPro(): boolean {
@@ -62,12 +64,16 @@ export class HasavaComponent {
   analyze() {
     if (!this.selectedFile) return;
     this.isAnalyzing = true;
-
-    // TODO: Connect to actual graphology API endpoint
-    // For now simulate a delay
-    setTimeout(() => {
+    const formData = new FormData();
+    formData.append('file', this.selectedFile);
+    this.http.post<string>(this.BASEURL + "/Handwriting/analyze", formData).subscribe((res)=>{
+      this.analysisResult = res;
       this.isAnalyzing = false;
-      this.analysisResult = 'הניתוח הושלם. חבר את ה-endpoint של ניתוח הגרפולוגיה בשרת.';
-    }, 2000);
+    }, err => {
+      this.isAnalyzing = false;
+      this.analysisResult = 'אירעה שגיאה בניתוח הקובץ';
+    });
   }
 }
+
+

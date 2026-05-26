@@ -1,17 +1,17 @@
-<div class="mini-modal-overlay">
-  <div class="mini-modal">
-    <div class="mini-header">
-      <h3>הוספת מאפיין</h3>
-      <button class="mini-close" type="button" (click)="close()">✕</button>
+<div class="form-modal">
+  <div class="form-container">
+    <div class="form-header">
+      <h2>הוספת מאפיין</h2>
+      <button class="btn-close" type="button" (click)="close()">✕</button>
     </div>
-    <form [formGroup]="propertyForm" (ngSubmit)="submit()">
-      <div class="mini-field">
+    <form [formGroup]="propertyForm" (ngSubmit)="submit()" class="form-content">
+      <div class="form-group">
         <label>תיאור המאפיין</label>
-        <input type="text" formControlName="description" placeholder="לדוגמה: עבודת צוות">
+        <input type="text" formControlName="description" placeholder="לדוגמה: עבודת צוות" class="form-control">
       </div>
-      <div class="mini-actions">
-        <button type="submit" class="mini-btn-save">שמור</button>
-        <button type="button" class="mini-btn-cancel" (click)="close()">ביטול</button>
+      <div class="form-actions">
+        <button type="submit" class="btn-save">שמור</button>
+        <button type="button" class="btn-cancel" (click)="close()">ביטול</button>
       </div>
     </form>
   </div>

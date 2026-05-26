@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class PositionService {
-  BASEURL: String = "http://localhost:7006/api/Position"
+  BASEURL: String = "https://localhost:7006/api/Position"
   http = inject(HttpClient)
   position: Array<Position> = new Array<Position>();
   help: Array<Position> = new Array<Position>();
